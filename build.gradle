@@ -4,6 +4,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.gradle.userdev' version '7.0.145'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -97,6 +98,22 @@ dependencies {
     // And its provides the option to then use net.minecraft as the group, and one of; client, server or joined as the module name, plus the game version as version.
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    // mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    // modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // // Fabric API. This is technically optional, but you probably want it anyway.
+    // modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // modApi include("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
+    //     exclude(group: "net.fabricmc.fabric-api")
+    // }
+
+    // modImplementation("com.terraformersmc:modmenu:${project.mod_menu_version}") {
+    //     exclude module: 'fabric-api' // includes bad Fabric API
+    // }
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -121,9 +138,6 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
-// This block of code expands all declared replace properties in the specified resource targets.
-// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
-// When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.
 // See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [

@@ -1,67 +1,74 @@
-// package ru.astemir.keepinventory.mixin;
+package ru.astemir.keepinventory.mixin;
 
-// import java.util.List;
-// import javax.annotation.Nullable;
-// import net.minecraft.world.entity.EntityType;
-// import net.minecraft.world.entity.LivingEntity;
-// import net.minecraft.world.entity.item.ItemEntity;
-// import net.minecraft.world.entity.player.Inventory;
-// import net.minecraft.world.entity.player.Player;
-// import net.minecraft.world.item.ItemStack;
-// import net.minecraft.world.item.enchantment.EnchantmentHelper;
-// import net.minecraft.world.level.GameRules;
-// import net.minecraft.world.level.Level;
-// import org.spongepowered.asm.mixin.Mixin;
-// import org.spongepowered.asm.mixin.Shadow;
-// import org.spongepowered.asm.mixin.injection.At;
-// import org.spongepowered.asm.mixin.injection.Inject;
-// import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-// import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-// import ru.astemir.keepinventory.KIConfig;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import ru.astemir.keepinventory.KIConfig;
 
-//@Mixin({Player.class})
-//public abstract class MixinPlayer extends LivingEntity {
-// /*    */   @Shadow
-// /*    */   public abstract Inventory m_150109_();
-// /*    */   
-// /*    */   @Shadow
-// /*    */   @Nullable
-// /*    */   public abstract ItemEntity m_7197_(ItemStack paramItemStack, boolean paramBoolean1, boolean paramBoolean2);
-// /*    */   
-// /*    */   protected MixinPlayer(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
-// /* 32 */     super(p_20966_, p_20967_);
-// /*    */   }
-// /*    */   
-// /*    */   @Inject(method = {"dropEquipment"}, at = {@At("HEAD")}, cancellable = true)
-// /*    */   public void _onDropEquipment(CallbackInfo ci) {
-// /* 37 */     boolean keepInventory = ((GameRules.BooleanValue)this.f_19853_.m_46469_().m_46170_(GameRules.f_46133_)).m_46223_();
-// /* 38 */     if (!keepInventory && (
-// /* 39 */       (Boolean)KIConfig.ENABLED.get()).booleanValue()) {
-// /* 40 */       List<? extends Integer> savedSlots = (List<? extends Integer>)KIConfig.KEEPED_SLOTS.get();
-// /* 41 */       int containerSize = m_150109_().m_6643_();
-// /* 42 */       for (int i = 0; i < containerSize; i++) {
-// /* 43 */         ItemStack itemstack = m_150109_().m_8020_(i);
-// /* 44 */         if (!savedSlots.contains(Integer.valueOf(i)) && 
-// /* 45 */           !itemstack.m_41619_()) {
-// /* 46 */           if (EnchantmentHelper.m_44924_(itemstack)) {
-// /* 47 */             m_150109_().m_8016_(i);
-// /*    */           } else {
-// /* 49 */             m_7197_(itemstack, true, false);
-// /* 50 */             m_150109_().m_6836_(i, ItemStack.f_41583_);
-// /*    */           } 
-// /*    */         }
-// /*    */       } 
-// /*    */       
-// /* 55 */       ci.cancel();
-// /*    */     } 
-// /*    */   }
-// /*    */ 
-// /*    */   
-// /*    */   @Inject(method = {"getExperienceReward"}, at = {@At("HEAD")}, cancellable = true)
-// /*    */   public void _onGetExperience(CallbackInfoReturnable<Integer> cir) {
-// /* 62 */     boolean keepInventory = ((GameRules.BooleanValue)this.f_19853_.m_46469_().m_46170_(GameRules.f_46133_)).m_46223_();
-// /* 63 */     if (!keepInventory && (
-// /* 64 */       (Boolean)KIConfig.ENABLED.get()).booleanValue() && ((Boolean)KIConfig.KEEP_EXPERIENCE.get()).booleanValue())
-// /* 65 */       cir.setReturnValue(Integer.valueOf(0)); 
-// /*    */   }
-//}
+import javax.annotation.Nullable;
+import java.util.List;
+
+@Mixin(Player.class)
+public abstract class MixinPlayer extends LivingEntity {
+
+    @Shadow public abstract Inventory getInventory();
+  
+    @Shadow @Nullable public abstract ItemEntity m_7197_(ItemStack paramItemStack, boolean paramBoolean1, boolean paramBoolean2);
+//    @Shadow @Nullable public abstract ItemEntity drop(ItemStack p_36179_, boolean p_36180_, boolean p_36181_); // orig src
+
+    protected MixinPlayer(EntityType<? extends LivingEntity> entityType, Level level) {
+
+        super(entityType, level);
+    }
+//    protected MixinPlayer(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
+//        super(p_20966_, p_20967_);
+//    } // orig method
+
+
+    @Inject(method = "dropEquipment",at = @At("HEAD"),cancellable = true)
+    public void _onDropEquipment(CallbackInfo ci) {
+        boolean keepInventory = level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get();
+        if (!keepInventory) {
+            if (KIConfig.ENABLED.get()) {
+                List<? extends Integer> savedSlots = KIConfig.KEEPED_SLOTS.get();
+                int containerSize = getInventory().getContainerSize();
+                for(int i = 0; i < containerSize; ++i) {
+                    ItemStack itemstack = getInventory().getItem(i);
+                    if (!savedSlots.contains(i)) {
+                        if (!itemstack.isEmpty()) {
+                            if (EnchantmentHelper.hasVanishingCurse(itemstack)) {
+                                getInventory().removeItemNoUpdate(i);
+                            }else{
+                                drop(itemstack,true,false);
+                                getInventory().setItem(i,ItemStack.EMPTY);
+                            }
+                        }
+                    }
+                }
+                ci.cancel();
+            }
+        }
+    }
+
+    @Inject(method = "getExperienceReward",at = @At("HEAD"), cancellable = true)
+    public void _onGetExperience(CallbackInfoReturnable<Integer> cir){
+        boolean keepInventory = level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get();
+        if (!keepInventory) {
+            if (KIConfig.ENABLED.get() && KIConfig.KEEP_EXPERIENCE.get()) {
+                cir.setReturnValue(0);
+            }
+        }
+    }
+}
