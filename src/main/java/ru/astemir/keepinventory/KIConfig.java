@@ -1,14 +1,19 @@
 package ru.astemir.keepinventory;
 
+import com.mojang.logging.LogUtils;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 @EventBusSubscriber(modid = ConfigurableKeepInventory.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class KIConfig
 {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
     public static final ModConfigSpec.ConfigValue<Boolean> ENABLED = BUILDER
@@ -46,11 +51,16 @@ public class KIConfig
             .comment("Modifier that would be multiplied by your previous hunger amount.")
             .define("keepedHungerModifier",1.0);
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> KEEPED_HUNGER_MIN_LIMIT = BUILDER
+    public static final ModConfigSpec.ConfigValue<Integer> KEEPED_HUNGER_MIN_LIMIT = BUILDER
             .comment("Minimal value of hunger after your death, to prevent spawn with empty hunger bar.")
             .define("keepedHungerMinLimit",1);
-    public static final ForgeConfigSpec.ConfigValue<Double> KEEPED_SATURATION_MODIFIER = BUILDER
+    public static final ModConfigSpec.ConfigValue<Double> KEEPED_SATURATION_MODIFIER = BUILDER
             .comment("Modifier that would be multiplied by your previous saturation amount.")
             .define("keepedSaturationModifier",1.0);
-    static final ForgeConfigSpec SPEC = BUILDER.build();
+    static final ModConfigSpec SPEC = BUILDER.build();
+
+    @SubscribeEvent
+    static void onLoad(final ModConfigEvent event){
+        LOGGER.info("ModConfigEvent ", event);
+    }
 }

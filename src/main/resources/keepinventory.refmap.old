@@ -1,0 +1,22 @@
+{
+  "mappings": {
+    "ru/astemir/keepinventory/mixin/MixinPlayer": {
+      "dropEquipment": "Lnet/minecraft/world/entity/player/Player;m_5907_()V",
+      "getExperienceReward": "Lnet/minecraft/world/entity/player/Player;m_213860_()I"
+    },
+    "ru/astemir/keepinventory/mixin/MixinServerPlayer": {
+      "restoreFrom": "Lnet/minecraft/server/level/ServerPlayer;m_9015_(Lnet/minecraft/server/level/ServerPlayer;Z)V"
+    }
+  },
+  "data": {
+    "searge": {
+      "ru/astemir/keepinventory/mixin/MixinPlayer": {
+        "dropEquipment": "Lnet/minecraft/world/entity/player/Player;m_5907_()V",
+        "getExperienceReward": "Lnet/minecraft/world/entity/player/Player;m_213860_()I"
+      },
+      "ru/astemir/keepinventory/mixin/MixinServerPlayer": {
+        "restoreFrom": "Lnet/minecraft/server/level/ServerPlayer;m_9015_(Lnet/minecraft/server/level/ServerPlayer;Z)V"
+      }
+    }
+  }
+}

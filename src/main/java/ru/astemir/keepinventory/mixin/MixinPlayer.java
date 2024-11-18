@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+//import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,19 +25,15 @@ import java.util.List;
 public abstract class MixinPlayer extends LivingEntity {
 
     @Shadow public abstract Inventory getInventory();
-  
-    @Shadow @Nullable public abstract ItemEntity m_7197_(ItemStack paramItemStack, boolean paramBoolean1, boolean paramBoolean2);
-//    @Shadow @Nullable public abstract ItemEntity drop(ItemStack p_36179_, boolean p_36180_, boolean p_36181_); // orig src
+
+    @Shadow @Nullable public abstract ItemEntity drop(ItemStack paramItemStack, boolean paramBoolean1, boolean paramBoolean2);
 
     protected MixinPlayer(EntityType<? extends LivingEntity> entityType, Level level) {
 
         super(entityType, level);
     }
-//    protected MixinPlayer(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
-//        super(p_20966_, p_20967_);
-//    } // orig method
 
-
+    //@Inject(method = "dropEquipment",at = @At("HEAD"),cancellable = true)
     @Inject(method = "dropEquipment",at = @At("HEAD"),cancellable = true)
     public void _onDropEquipment(CallbackInfo ci) {
         boolean keepInventory = level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get();
@@ -48,12 +45,12 @@ public abstract class MixinPlayer extends LivingEntity {
                     ItemStack itemstack = getInventory().getItem(i);
                     if (!savedSlots.contains(i)) {
                         if (!itemstack.isEmpty()) {
-                            if (EnchantmentHelper.hasVanishingCurse(itemstack)) {
-                                getInventory().removeItemNoUpdate(i);
-                            }else{
-                                drop(itemstack,true,false);
-                                getInventory().setItem(i,ItemStack.EMPTY);
-                            }
+//                            if (EnchantmentHelper.hasVanishingCurse(itemstack)) {
+//                                getInventory().removeItemNoUpdate(i);
+//                            }else{
+                            drop(itemstack,true,false);
+                            getInventory().setItem(i,ItemStack.EMPTY);
+//                            } //TODO hasVanishingCurse not exist in current neoforge, so saving all items for now
                         }
                     }
                 }
@@ -62,7 +59,7 @@ public abstract class MixinPlayer extends LivingEntity {
         }
     }
 
-    @Inject(method = "getExperienceReward",at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getBaseExperienceReward",at = @At("HEAD"), cancellable = true)
     public void _onGetExperience(CallbackInfoReturnable<Integer> cir){
         boolean keepInventory = level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get();
         if (!keepInventory) {
