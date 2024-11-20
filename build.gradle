@@ -4,6 +4,8 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.gradle.userdev' version '7.0.145'
+    id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
+    id 'com.diffplug.spotless' version "7.0.0.BETA4"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -102,7 +104,7 @@ dependencies {
     // And its provides the option to then use net.minecraft as the group, and one of; client, server or joined as the module name, plus the game version as version.
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
-    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
+    //annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
     compileOnly 'org.spongepowered:mixin:0.8.7'
     //annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     //compileOnly 'org.spongepowered:mixin:0.8.5'
@@ -170,10 +172,9 @@ publishing {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
     options.compilerArgs += [
+            //"-AoutRefMapFile=${project.rootDir}/build/resources/main/${mod_id}.refmap.json",
             "-AoutRefMapFile=${project.buildDir}/resources/main/${mod_id}.refmap.json",
             "-AdefaultObfuscationEnv=official",
-            //"-AdefaultObfuscationEnv=mcp"
-            //"-AmapFile=${project.projectDir}/build/tmp/mappings/mappings.tiny"
     ]
 }
 

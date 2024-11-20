@@ -33,7 +33,6 @@ public abstract class MixinPlayer extends LivingEntity {
         super(entityType, level);
     }
 
-    //@Inject(method = "dropEquipment",at = @At("HEAD"),cancellable = true)
     @Inject(method = "dropEquipment",at = @At("HEAD"),cancellable = true)
     public void _onDropEquipment(CallbackInfo ci) {
         boolean keepInventory = level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get();
@@ -50,7 +49,7 @@ public abstract class MixinPlayer extends LivingEntity {
 //                            }else{
                             drop(itemstack,true,false);
                             getInventory().setItem(i,ItemStack.EMPTY);
-//                            } //TODO hasVanishingCurse not exist in current neoforge, so saving all items for now
+//                            } //TODO hasVanishingCurse not exist in current 1.21, so saving all items for now
                         }
                     }
                 }
