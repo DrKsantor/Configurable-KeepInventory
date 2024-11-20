@@ -25,9 +25,6 @@ public abstract class MixinServerPlayer extends Player {
     public MixinServerPlayer(Level p_250508_, BlockPos p_250289_, float p_251702_, GameProfile p_252153_) {
         super(p_250508_, p_250289_, p_251702_, p_252153_);
     }
-//    public MixinServerPlayer(Level p_250508_, BlockPos p_250289_, float p_251702_, GameProfile p_252153_, @Nullable ProfilePublicKey p_219731_) {
-//        super(p_250508_, p_250289_, p_251702_, p_252153_, p_219731_);
-//    }
 
     @Inject(method = "restoreFrom", at=@At("TAIL"))
     public void _OnRestoreFrom(ServerPlayer player, boolean p_9017_, CallbackInfo ci){
