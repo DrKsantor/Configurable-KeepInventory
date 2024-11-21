@@ -17,8 +17,8 @@
   "keepinventory.config.keepSaturation.comment": "Сохранять показать насыщенности игрока после смерти.",
   "keepinventory.config.keepPotionEffects.comment": "Сохранять эффекты зелий, действующие на игрока, после смерти.",
   "keepinventory.config.keepedSlots.comment": "Список id слотов, которые будут сохранены после смерти",
-  "keepinventory.config.keepedExperienceModifier.comment": "Модификатор, умножающий опыт игрока до смерти.",
-  "keepinventory.config.keepedHungerModifier.comment": "Модификтор, умножающий показатель голода игрока до смерти.",
+  "keepinventory.config.keepedExperienceModifier.comment": "Модификатор, умножающий опыт игрока до смерти. Сохранение опыта должно быть включено.",
+  "keepinventory.config.keepedHungerModifier.comment": "Модификтор, умножающий показатель голода игрока до смерти. Сохранение голода должно быть включено.",
   "keepinventory.config.keepedHungerMinLimit.comment": "Минимальное значение показателя голода после смерти игрока, чтиобы предовратить спавн с пустым показателем голода.",
-  "keepinventory.config.keepedSaturationModifier.comment": "Модификатор, умножающий показатель насыщенности игрока до смерти."
+  "keepinventory.config.keepedSaturationModifier.comment": "Модификатор, умножающий показатель насыщенности игрока до смерти. Сохранение насыщенности должно быть включено."
 }

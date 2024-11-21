@@ -48,21 +48,21 @@ public class KIConfig
             .defineList("keepedSlots", List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 36, 37, 38, 39, 40, 45), (id)->true);
     public static final ModConfigSpec.ConfigValue<Double> KEEPED_EXPERIENCE_MODIFIER = BUILDER
             .translation("keepinventory.config.keepedExperienceModifier")
-            .comment("Modifier that would be multiplied by your previous experience amount.")
+            .comment("Modifier that would be multiplied by your previous experience amount. Enabled keep experience required.")
             .define("keepedExperienceModifier",1.0);
 
     public static final ModConfigSpec.ConfigValue<Double> KEEPED_HUNGER_MODIFIER = BUILDER
             .translation("keepinventory.config.keepedHungerModifier")
-            .comment("Modifier that would be multiplied by your previous hunger amount.")
+            .comment("Modifier that would be multiplied by your previous hunger amount. Enabled keep hunger required.")
             .define("keepedHungerModifier",1.0);
 
     public static final ModConfigSpec.ConfigValue<Integer> KEEPED_HUNGER_MIN_LIMIT = BUILDER
             .translation("keepinventory.config.keepedHungerMinLimit")
             .comment("Minimal value of hunger after your death, to prevent spawn with empty hunger bar.")
-            .define("keepedHungerMinLimit",1);
+            .define("keepedHungerMinLimit",8);
     public static final ModConfigSpec.ConfigValue<Double> KEEPED_SATURATION_MODIFIER = BUILDER
             .translation("keepinventory.config.keepedSaturationModifier")
-            .comment("Modifier that would be multiplied by your previous saturation amount.")
+            .comment("Modifier that would be multiplied by your previous saturation amount. Enabled keep saturation required.")
             .define("keepedSaturationModifier",1.0);
     static final ModConfigSpec SPEC = BUILDER.build();
 

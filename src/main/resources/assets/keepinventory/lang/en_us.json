@@ -2,11 +2,11 @@
   "keepinventory.config.modEnabled": "Mod enable",
   "keepinventory.config.keepExperience": "Keep experience",
   "keepinventory.config.keepScore": "Keep score",
-  "keepinventory.config.keepHunger": "Keep hunder",
+  "keepinventory.config.keepHunger": "Keep hunger",
   "keepinventory.config.keepSaturation": "Keep saturation",
   "keepinventory.config.keepPotionEffects": "Keep potion effects",
   "keepinventory.config.keepedSlots": "Slots ids to save",
-  "keepinventory.config.keepedExperienceModifier": "Expirience modifier",
+  "keepinventory.config.keepedExperienceModifier": "Experience modifier",
   "keepinventory.config.keepedHungerModifier": "Hunger modifier",
   "keepinventory.config.keepedHungerMinLimit": "Minimal hunger",
   "keepinventory.config.keepedSaturationModifier": "Saturation modifier",
@@ -17,8 +17,8 @@
   "keepinventory.config.keepSaturation.comment": "Keep player saturation after death.",
   "keepinventory.config.keepPotionEffects.comment": "Keep player potion effects after death.",
   "keepinventory.config.keepedSlots.comment": "A list of slots ids for keep inventory.",
-  "keepinventory.config.keepedExperienceModifier.comment": "Modifier that would be multiplied by your previous experience amount.",
-  "keepinventory.config.keepedHungerModifier.comment": "Modifier that would be multiplied by your previous hunger amount.",
+  "keepinventory.config.keepedExperienceModifier.comment": "Modifier that would be multiplied by your previous experience amount. Enabled keep experience required.",
+  "keepinventory.config.keepedHungerModifier.comment": "Modifier that would be multiplied by your previous hunger amount. Enabled keep hunger required.",
   "keepinventory.config.keepedHungerMinLimit.comment": "Minimal value of hunger after your death, to prevent spawn with empty hunger bar.",
-  "keepinventory.config.keepedSaturationModifier.comment": "Modifier that would be multiplied by your previous saturation amount."
+  "keepinventory.config.keepedSaturationModifier.comment": "Modifier that would be multiplied by your previous saturation amount. Enabled keep saturation required."
 }
