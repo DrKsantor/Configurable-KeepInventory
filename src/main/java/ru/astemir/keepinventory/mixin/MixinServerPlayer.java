@@ -15,15 +15,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.astemir.keepinventory.EffectCache;
 import ru.astemir.keepinventory.KIConfig;
 
-import org.slf4j.Logger;
-import com.mojang.logging.LogUtils;
 import java.util.Collection;
 import java.util.UUID;
 
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer extends Player {
-
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     public MixinServerPlayer(Level p_250508_, BlockPos p_250289_, float p_251702_, GameProfile p_252153_) {
         super(p_250508_, p_250289_, p_251702_, p_252153_);
@@ -40,8 +36,6 @@ public abstract class MixinServerPlayer extends Player {
                     if (!activeEffects.isEmpty()) {
                         EffectCache.store(playerId, activeEffects);
                     }
-
-                    LOGGER.info("[Mixin] Stored effects for player {}: {}", playerId, activeEffects);
                 }
             }
         }
@@ -70,8 +64,6 @@ public abstract class MixinServerPlayer extends Player {
                     for (MobEffectInstance effect : storedEffects) {
                         this.addEffect(effect);
                     }
-
-                    LOGGER.info("[Mixin] Restored effects for player {}: {}", playerId, storedEffects);
                 }
             }
             if (KIConfig.KEEP_SCORE.get()){

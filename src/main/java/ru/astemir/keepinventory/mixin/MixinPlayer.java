@@ -28,8 +28,6 @@ public abstract class MixinPlayer extends LivingEntity {
 
     @Shadow @Nullable public abstract ItemEntity drop(ItemStack paramItemStack, boolean paramBoolean1, boolean paramBoolean2);
 
-    @Shadow protected abstract void destroyVanishingCursedItems();
-
     protected MixinPlayer(EntityType<? extends LivingEntity> entityType, Level level) {
 
         super(entityType, level);
