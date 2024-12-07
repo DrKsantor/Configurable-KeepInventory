@@ -1,24 +1,15 @@
 package ru.astemir.keepinventory.mixin;
 
-import com.mojang.logging.LogUtils;
-
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-//import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,6 +27,8 @@ public abstract class MixinPlayer extends LivingEntity {
     @Shadow public abstract Inventory getInventory();
 
     @Shadow @Nullable public abstract ItemEntity drop(ItemStack paramItemStack, boolean paramBoolean1, boolean paramBoolean2);
+
+    @Shadow protected abstract void destroyVanishingCursedItems();
 
     protected MixinPlayer(EntityType<? extends LivingEntity> entityType, Level level) {
 
