@@ -38,7 +38,9 @@ public abstract class MixinPlayer extends LivingEntity {
         boolean keepInventory = level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get();
         if (!keepInventory) {
             if (KIConfig.ENABLED.get()) {
-                List<? extends Integer> savedSlots = KIConfig.KEEPED_SLOTS.get();
+                String slotsString = KIConfig.KEEPED_SLOTS.get();
+                List<? extends Integer> savedSlots = KIConfig.parseKeepedSlots(slotsString);
+
                 int containerSize = getInventory().getContainerSize();
                 for(int i = 0; i < containerSize; ++i) {
                     ItemStack itemstack = getInventory().getItem(i);

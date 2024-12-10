@@ -5,7 +5,9 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.fml.common.EventBusSubscriber;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @EventBusSubscriber(modid = ConfigurableKeepInventory.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class KIConfig
@@ -41,11 +43,11 @@ public class KIConfig
             .comment("Keep player potion effects after death.")
             .define("keepPotionEffects",false);
 
-
-    public static final ModConfigSpec.ConfigValue<List<? extends Integer>> KEEPED_SLOTS = BUILDER
+    public static final ModConfigSpec.ConfigValue<String> KEEPED_SLOTS = BUILDER
             .translation("keepinventory.config.keepedSlots")
-            .comment("A list of slots ids for keep inventory.")
-            .defineList("keepedSlots", List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 36, 37, 38, 39, 40, 45), (id)->true);
+            .comment("A comma-separated list of slot IDs to keep inventory, using strict format. Example: '0,1,2,36,37'")
+            .define("keepedSlots", "0,1,2,3,4,5,6,7,8,36,37,38,39,40,45");
+
     public static final ModConfigSpec.ConfigValue<Double> KEEPED_EXPERIENCE_MODIFIER = BUILDER
             .translation("keepinventory.config.keepedExperienceModifier")
             .comment("Modifier that would be multiplied by your previous experience amount. Enabled keep experience required.")
@@ -68,4 +70,15 @@ public class KIConfig
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event){}
+
+    public static List<?extends Integer> parseKeepedSlots(String slots) {
+        try {
+            return Arrays.stream(slots.split(","))
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+        } catch (NumberFormatException e) {
+            return List.of();
+        }
+    }
 }

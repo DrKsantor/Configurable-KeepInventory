@@ -16,6 +16,7 @@ import ru.astemir.keepinventory.EffectCache;
 import ru.astemir.keepinventory.KIConfig;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Mixin(ServerPlayer.class)
@@ -69,7 +70,10 @@ public abstract class MixinServerPlayer extends Player {
             if (KIConfig.KEEP_SCORE.get()){
                 this.setScore(player.getScore());
             }
-            for (int slotId : KIConfig.KEEPED_SLOTS.get()) {
+
+            String slotsString = KIConfig.KEEPED_SLOTS.get();
+            List<?extends Integer> savedSlots = KIConfig.parseKeepedSlots(slotsString);
+            for (int slotId : savedSlots) {
                 ItemStack itemStack = player.getInventory().getItem(slotId);
                 if (itemStack != null) {
                     this.getInventory().setItem(slotId, itemStack);
