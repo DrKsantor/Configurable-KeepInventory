@@ -19,8 +19,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
+
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer extends Player {
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public MixinServerPlayer(Level p_250508_, BlockPos p_250289_, float p_251702_, GameProfile p_252153_) {
         super(p_250508_, p_250289_, p_251702_, p_252153_);
@@ -42,22 +46,22 @@ public abstract class MixinServerPlayer extends Player {
         }
     }
 
-    @Inject(method = "restoreFrom", at=@At("TAIL"))
-    public void _OnRestoreFrom(ServerPlayer player, boolean p_9017_, CallbackInfo ci){
-        if (!p_9017_ && KIConfig.ENABLED.get()){
-            if (KIConfig.KEEP_EXPERIENCE.get()){
-                this.experienceLevel = (int) (player.experienceLevel*KIConfig.KEEPED_EXPERIENCE_MODIFIER.get());
-                this.totalExperience =  player.totalExperience;
+    @Inject(method = "restoreFrom", at = @At("TAIL"))
+    public void _OnRestoreFrom(ServerPlayer player, boolean p_9017_, CallbackInfo ci) {
+        if (!p_9017_ && KIConfig.ENABLED.get()) {
+            if (KIConfig.KEEP_EXPERIENCE.get()) {
+                this.experienceLevel = (int) (player.experienceLevel * KIConfig.KEEPED_EXPERIENCE_MODIFIER.get());
+                this.totalExperience = player.totalExperience;
                 this.experienceProgress = player.experienceProgress;
             }
-            if (KIConfig.KEEP_HUNGER.get()){
-                int hungerLevel = (int) (player.getFoodData().getFoodLevel()*KIConfig.KEEPED_HUNGER_MODIFIER.get());
-                this.foodData.setFoodLevel(Math.max(hungerLevel,KIConfig.KEEPED_HUNGER_MIN_LIMIT.get()));
+            if (KIConfig.KEEP_HUNGER.get()) {
+                int hungerLevel = (int) (player.getFoodData().getFoodLevel() * KIConfig.KEEPED_HUNGER_MODIFIER.get());
+                this.foodData.setFoodLevel(Math.max(hungerLevel, KIConfig.KEEPED_HUNGER_MIN_LIMIT.get()));
             }
-            if (KIConfig.KEEP_SATURATION.get()){
-                this.foodData.setSaturation((float) (player.getFoodData().getSaturationLevel()*KIConfig.KEEPED_SATURATION_MODIFIER.get()));
+            if (KIConfig.KEEP_SATURATION.get()) {
+                this.foodData.setSaturation((float) (player.getFoodData().getSaturationLevel() * KIConfig.KEEPED_SATURATION_MODIFIER.get()));
             }
-            if (KIConfig.KEEP_POTION_EFFECTS.get()){
+            if (KIConfig.KEEP_POTION_EFFECTS.get()) {
                 UUID playerId = player.getUUID();
 
                 if (EffectCache.hasEffects(playerId)) {
@@ -67,16 +71,31 @@ public abstract class MixinServerPlayer extends Player {
                     }
                 }
             }
-            if (KIConfig.KEEP_SCORE.get()){
+            if (KIConfig.KEEP_SCORE.get()) {
                 this.setScore(player.getScore());
             }
 
             String slotsString = KIConfig.KEEPED_SLOTS.get();
-            List<?extends Integer> savedSlots = KIConfig.parseKeepedSlots(slotsString);
+            List<? extends Integer> savedSlots = KIConfig.parseKeepedSlots(slotsString);
             for (int slotId : savedSlots) {
                 ItemStack itemStack = player.getInventory().getItem(slotId);
                 if (itemStack != null) {
                     this.getInventory().setItem(slotId, itemStack);
+                }
+            }
+
+            List<String> savedItems = KIConfig.parseKeepedItems(KIConfig.KEEPED_ITEMS.get());
+            LOGGER.info("[MixinServerPlayer] Slots restored. Trying to restore items: {}", savedItems);
+            for (int i = 0; i < this.getInventory().getContainerSize(); i++) {
+                ItemStack itemStack = player.getInventory().getItem(i);
+                if (itemStack.isEmpty()) continue;
+
+                String itemName = itemStack.getItem().toString();
+                LOGGER.info("[MixinServerPlayer] Currently checking item: {}, name:{}", itemStack, itemName);
+                if (savedItems.contains(itemName)) {
+                    LOGGER.info("[MixinServerPlayer] item in the save-list: slotId:{}, itemstack:{}", i, itemStack);
+                    this.getInventory().setItem(i, itemStack);
+                    //continue; // alternative
                 }
             }
         }
