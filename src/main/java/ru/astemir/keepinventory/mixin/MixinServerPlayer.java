@@ -95,7 +95,6 @@ public abstract class MixinServerPlayer extends Player {
                 if (savedItems.contains(itemName)) {
                     LOGGER.info("[MixinServerPlayer] item in the save-list: slotId:{}, itemstack:{}", i, itemStack);
                     this.getInventory().setItem(i, itemStack);
-                    //continue; // alternative
                 }
             }
         }

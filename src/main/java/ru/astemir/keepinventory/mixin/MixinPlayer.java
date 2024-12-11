@@ -51,28 +51,7 @@ public abstract class MixinPlayer extends LivingEntity {
                 int containerSize = getInventory().getContainerSize();
                 for (int i = 0; i < containerSize; ++i) {
                     ItemStack itemstack = getInventory().getItem(i);
-//                    if (!savedSlots.contains(i)) {
-//                        if (!itemstack.isEmpty()) {
-//                            if (EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
-//                                getInventory().removeItemNoUpdate(i);
-//                            } else {
-//                                String itemName = itemstack.getItem().toString();
-//                                LOGGER.info("[MixinPlayer] Check for save:{}, !contains:{}, i:{}", itemName, !savedItems.contains(itemName), i);
-//                                if (!savedItems.contains(itemName)) {
-//                                    LOGGER.info("[MixinPlayer] Item not in save list:{}", itemstack);
-//                                    drop(itemstack, true, false);
-//                                    getInventory().setItem(i, ItemStack.EMPTY);
-//                                }
-//                                else {
-//                                    LOGGER.info("[MixinPlayer] Item in save list:{}", itemstack);
-//                                    getInventory().setItem(i, itemstack);
-////                                    getInventory().add(itemstack);
-////                                    getInventory().setItem(i, ItemStack.EMPTY);
-//
-//                                }
-//                            }
-//                        }
-//                    }
+
                     if (itemstack.isEmpty()) {
                         continue;
                     }
@@ -91,6 +70,7 @@ public abstract class MixinPlayer extends LivingEntity {
                         //getInventory().setItem(i, itemstack);
                         continue;
                     }
+
                     LOGGER.info("[MixinPlayer] Item {} in slot {} is not in save list. Dropping.", itemstack, i);
                     drop(itemstack, true, false);
                     getInventory().setItem(i, ItemStack.EMPTY);
