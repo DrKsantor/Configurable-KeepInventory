@@ -44,6 +44,11 @@ public class KIConfig
             .comment("Keep player potion effects after death.")
             .define("keepPotionEffects",false);
 
+    public static final ModConfigSpec.ConfigValue<Boolean> KEEP_ALL_SLOTS = BUILDER
+            .translation("keepinventory.config.keepAllSlots")
+            .comment("Keep all slots without clarifying like vanilla rule.")
+            .define("keepAllSlots", false);
+
     public static final ModConfigSpec.ConfigValue<String> KEEPED_SLOTS = BUILDER
             .translation("keepinventory.config.keepedSlots")
             .comment("A comma-separated list of slot IDs to keep inventory, using strict format. Example: '0,1,2,36,37'")

@@ -75,25 +75,38 @@ public abstract class MixinServerPlayer extends Player {
                 this.setScore(player.getScore());
             }
 
-            String slotsString = KIConfig.KEEPED_SLOTS.get();
-            List<? extends Integer> savedSlots = KIConfig.parseKeepedSlots(slotsString);
-            for (int slotId : savedSlots) {
-                ItemStack itemStack = player.getInventory().getItem(slotId);
-                if (itemStack != null) {
-                    this.getInventory().setItem(slotId, itemStack);
+            Boolean isKeepAll = KIConfig.KEEP_ALL_SLOTS.get();
+            if (!isKeepAll) {
+                String slotsString = KIConfig.KEEPED_SLOTS.get();
+                List<? extends Integer> savedSlots = KIConfig.parseKeepedSlots(slotsString);
+                for (int slotId : savedSlots) {
+                    ItemStack itemStack = player.getInventory().getItem(slotId);
+                    if (itemStack != null) {
+                        this.getInventory().setItem(slotId, itemStack);
+                    }
+                }
+
+                List<String> savedItems = KIConfig.parseKeepedItems(KIConfig.KEEPED_ITEMS.get());
+                LOGGER.info("[MixinServerPlayer] Slots restored. Trying to restore items: {}", savedItems);
+                for (int i = 0; i < this.getInventory().getContainerSize(); i++) {
+                    ItemStack itemStack = player.getInventory().getItem(i);
+                    if (itemStack.isEmpty()) continue;
+
+                    String itemName = itemStack.getItem().toString();
+                    LOGGER.info("[MixinServerPlayer] Currently checking item: {}, name:{}", itemStack, itemName);
+                    if (savedItems.contains(itemName)) {
+                        LOGGER.info("[MixinServerPlayer] item in the save-list: slotId:{}, itemstack:{}", i, itemStack);
+                        this.getInventory().setItem(i, itemStack);
+                    }
                 }
             }
-
-            List<String> savedItems = KIConfig.parseKeepedItems(KIConfig.KEEPED_ITEMS.get());
-            LOGGER.info("[MixinServerPlayer] Slots restored. Trying to restore items: {}", savedItems);
-            for (int i = 0; i < this.getInventory().getContainerSize(); i++) {
-                ItemStack itemStack = player.getInventory().getItem(i);
-                if (itemStack.isEmpty()) continue;
-
-                String itemName = itemStack.getItem().toString();
-                LOGGER.info("[MixinServerPlayer] Currently checking item: {}, name:{}", itemStack, itemName);
-                if (savedItems.contains(itemName)) {
-                    LOGGER.info("[MixinServerPlayer] item in the save-list: slotId:{}, itemstack:{}", i, itemStack);
+            else {
+                for (int i = 0; i < this.getInventory().getContainerSize(); i++) {
+                    ItemStack itemStack = player.getInventory().getItem(i);
+                    if (itemStack.isEmpty()) {
+                        continue;
+                    }
+                    LOGGER.info("[MixinServerPlayer] Enabled all items restore: slotId:{}, itemstack:{}", i, itemStack);
                     this.getInventory().setItem(i, itemStack);
                 }
             }
