@@ -21,8 +21,13 @@ import ru.astemir.keepinventory.KIConfig;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
+
 @Mixin(Player.class)
 public abstract class MixinPlayer extends LivingEntity {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     @Shadow public abstract Inventory getInventory();
 
@@ -38,22 +43,37 @@ public abstract class MixinPlayer extends LivingEntity {
         boolean keepInventory = level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get();
         if (!keepInventory) {
             if (KIConfig.ENABLED.get()) {
-                String slotsString = KIConfig.KEEPED_SLOTS.get();
-                List<? extends Integer> savedSlots = KIConfig.parseKeepedSlots(slotsString);
+                List<? extends Integer> savedSlots = KIConfig.parseKeepedSlots(KIConfig.KEEPED_SLOTS.get());
+                List<String> savedItems = KIConfig.parseKeepedItems(KIConfig.KEEPED_ITEMS.get());
+
+                LOGGER.info("[MixinPlayer] slotIDs:{}, savedItems:{}", savedSlots, savedItems);
 
                 int containerSize = getInventory().getContainerSize();
-                for(int i = 0; i < containerSize; ++i) {
+                for (int i = 0; i < containerSize; ++i) {
                     ItemStack itemstack = getInventory().getItem(i);
-                    if (!savedSlots.contains(i)) {
-                        if (!itemstack.isEmpty()) {
-                            if (EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)){
-                                getInventory().removeItemNoUpdate(i);
-                            }else{
-                                drop(itemstack,true,false);
-                                getInventory().setItem(i,ItemStack.EMPTY);
-                            }
-                        }
+
+                    if (itemstack.isEmpty()) {
+                        continue;
                     }
+                    if (savedSlots.contains(i)) {
+                        LOGGER.info("[MixinPlayer] Slot {} is in saved slots. Skipping.", i);
+                        continue;
+                    }
+                    if (EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
+                        LOGGER.info("[MixinPlayer] Item {} in slot {} have Vanishing Curse. Removing.", itemstack, i);
+                        getInventory().removeItemNoUpdate(i);
+                        continue;
+                    }
+                    String itemName = itemstack.getItem().toString();
+                    if (savedItems.contains(itemName)) {
+                        LOGGER.info("[MixinPlayer] Item {} in slot {} is in the save list. Keeping.", itemstack, i);
+                        //getInventory().setItem(i, itemstack);
+                        continue;
+                    }
+
+                    LOGGER.info("[MixinPlayer] Item {} in slot {} is not in save list. Dropping.", itemstack, i);
+                    drop(itemstack, true, false);
+                    getInventory().setItem(i, ItemStack.EMPTY);
                 }
                 ci.cancel();
             }

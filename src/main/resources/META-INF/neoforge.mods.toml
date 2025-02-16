@@ -22,7 +22,7 @@ displayName="${mod_name}"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/configurable-keepinventory"
 logoFile="pack.png"
 authors="${mod_authors}"
-description='''${mod_description}''''
+description='''${mod_description}'''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
 [[mixins]]
