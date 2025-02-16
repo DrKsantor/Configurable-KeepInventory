@@ -5,6 +5,7 @@
   "keepinventory.config.keepHunger": "Сохранять голод",
   "keepinventory.config.keepSaturation": "Сохранять насыщенность",
   "keepinventory.config.keepPotionEffects": "Сохранять эффекты зелий",
+  "keepinventory.config.keepAllSlots": "Сохранять все вещи",
   "keepinventory.config.keepedSlots": "Список слотов для сохранения",
   "keepinventory.config.keepedItems": "Список id вещей для сохранения",
   "keepinventory.config.keepedExperienceModifier": "Модификатор опыта",

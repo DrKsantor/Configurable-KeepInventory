@@ -43,6 +43,7 @@ public abstract class MixinPlayer extends LivingEntity {
         boolean keepInventory = level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get();
         if (!keepInventory) {
             if (KIConfig.ENABLED.get()) {
+                Boolean isKeepAll = KIConfig.KEEP_ALL_SLOTS.get();
                 List<? extends Integer> savedSlots = KIConfig.parseKeepedSlots(KIConfig.KEEPED_SLOTS.get());
                 List<String> savedItems = KIConfig.parseKeepedItems(KIConfig.KEEPED_ITEMS.get());
 
@@ -64,10 +65,16 @@ public abstract class MixinPlayer extends LivingEntity {
                         getInventory().removeItemNoUpdate(i);
                         continue;
                     }
+
                     String itemName = itemstack.getItem().toString();
                     if (savedItems.contains(itemName)) {
                         LOGGER.info("[MixinPlayer] Item {} in slot {} is in the save list. Keeping.", itemstack, i);
                         //getInventory().setItem(i, itemstack);
+                        continue;
+                    }
+
+                    if (isKeepAll) {
+                        LOGGER.info("[MixinPlayer] Item {} in slot {} saved as KEEP_ALL rule enabled.", itemstack, i);
                         continue;
                     }
 

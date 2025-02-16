@@ -5,6 +5,7 @@
   "keepinventory.config.keepHunger": "Keep hunger",
   "keepinventory.config.keepSaturation": "Keep saturation",
   "keepinventory.config.keepPotionEffects": "Keep potion effects",
+  "keepinventory.config.keepAllSlots": "Save all items",
   "keepinventory.config.keepedSlots": "Slots ids to save",
   "keepinventory.config.keepedItems": "Items ids to save",
   "keepinventory.config.keepedExperienceModifier": "Experience modifier",
