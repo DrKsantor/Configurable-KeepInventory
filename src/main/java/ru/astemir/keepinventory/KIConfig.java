@@ -44,7 +44,7 @@ public class KIConfig
 
     public static final ModConfigSpec.ConfigValue<Boolean> APPLY_DURABILITY_PENALTY = BUILDER
             .translation("keepinventory.config.applyDurabilityPenalty")
-            .comment("Damage player's items with durability after death.")
+            .comment("Damage player's items durability after death.")
             .define("applyDurabilityPenalty", false);
 
     public static final ModConfigSpec.ConfigValue<Boolean> KEEP_ALL_SLOTS = BUILDER

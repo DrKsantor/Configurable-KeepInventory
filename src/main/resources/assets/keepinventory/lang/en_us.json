@@ -20,7 +20,7 @@
   "keepinventory.config.keepHunger.comment": "Keep player hunger after death.",
   "keepinventory.config.keepSaturation.comment": "Keep player saturation after death.",
   "keepinventory.config.keepPotionEffects.comment": "Keep player potion effects after death.",
-  "keepinventory.config.applyDurabilityPenalty.comment": "Damage player's items with durability after death.",
+  "keepinventory.config.applyDurabilityPenalty.comment": "Damage player's items durability after death.",
   "keepinventory.config.keepedSlots.comment": "A comma-separated list of slot IDs to keep inventory, using strict format. Example: '0,1,2,36,37'",
   "keepinventory.config.keepedItems.comment": "A comma-separated list of item IDs to keep after death, using strict format. Example: 'minecraft:torch,minecraft:arrow'",
   "keepinventory.config.keepedExperienceModifier.comment": "Modifier that would be multiplied by your previous experience amount. Enabled keep experience required.",
