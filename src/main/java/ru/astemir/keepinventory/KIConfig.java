@@ -28,12 +28,10 @@ public class KIConfig
             .translation("keepinventory.config.keepScore")
             .comment("Keep player score after death.")
             .define("keepScore",true);
-
     public static final ModConfigSpec.ConfigValue<Boolean> KEEP_HUNGER = BUILDER
             .translation("keepinventory.config.keepHunger")
             .comment("Keep player hunger after death.")
             .define("keepHunger",false);
-
     public static final ModConfigSpec.ConfigValue<Boolean> KEEP_SATURATION = BUILDER
             .translation("keepinventory.config.keepSaturation")
             .comment("Keep player saturation after death.")
@@ -43,6 +41,11 @@ public class KIConfig
             .translation("keepinventory.config.keepPotionEffects")
             .comment("Keep player potion effects after death.")
             .define("keepPotionEffects",false);
+
+    public static final ModConfigSpec.ConfigValue<Boolean> APPLY_DURABILITY_PENALTY = BUILDER
+            .translation("keepinventory.config.applyDurabilityPenalty")
+            .comment("Damage player's items with durability after death.")
+            .define("applyDurabilityPenalty", false);
 
     public static final ModConfigSpec.ConfigValue<Boolean> KEEP_ALL_SLOTS = BUILDER
             .translation("keepinventory.config.keepAllSlots")
@@ -77,6 +80,13 @@ public class KIConfig
             .translation("keepinventory.config.keepedSaturationModifier")
             .comment("Modifier that would be multiplied by your previous saturation amount. Enabled keep saturation required.")
             .define("keepedSaturationModifier",1.0);
+
+
+    public static final ModConfigSpec.ConfigValue<Double> DURABILITY_MODIFIER = BUILDER
+            .translation("keepinventory.config.durabilityModifier")
+            .comment("A modifier applied to an item's durability if the item is saved, when possible.")
+            .define("durabilityModifier", 1.0);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 
     @SubscribeEvent
