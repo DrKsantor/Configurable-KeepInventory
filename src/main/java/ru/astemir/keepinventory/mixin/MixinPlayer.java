@@ -56,13 +56,15 @@ public abstract class MixinPlayer extends LivingEntity {
                     if (itemstack.isEmpty()) {
                         continue;
                     }
-                    if (savedSlots.contains(i)) {
-                        LOGGER.info("[MixinPlayer] Slot {} is in saved slots. Skipping.", i);
-                        continue;
-                    }
+
                     if (EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
                         LOGGER.info("[MixinPlayer] Item {} in slot {} have Vanishing Curse. Removing.", itemstack, i);
                         getInventory().removeItemNoUpdate(i);
+                        continue;
+                    }
+
+                    if (savedSlots.contains(i)) {
+                        LOGGER.info("[MixinPlayer] Slot {} is in saved slots. Skipping.", i);
                         continue;
                     }
 
