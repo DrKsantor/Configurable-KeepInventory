@@ -5,6 +5,7 @@
   "keepinventory.config.keepHunger": "Keep hunger",
   "keepinventory.config.keepSaturation": "Keep saturation",
   "keepinventory.config.keepPotionEffects": "Keep potion effects",
+  "keepinventory.config.applyDurabilityPenalty": "Durability penalty",
   "keepinventory.config.keepAllSlots": "Save all items",
   "keepinventory.config.keepedSlots": "Slots ids to save",
   "keepinventory.config.keepedItems": "Items ids to save",
@@ -12,16 +13,19 @@
   "keepinventory.config.keepedHungerModifier": "Hunger modifier",
   "keepinventory.config.keepedHungerMinLimit": "Minimal hunger",
   "keepinventory.config.keepedSaturationModifier": "Saturation modifier",
+  "keepinventory.config.durabilityModifier":"Durability modifier",
   "keepinventory.config.modEnabled.comment": "Mod functionality enabled",
   "keepinventory.config.keepExperience.comment": "Keep player experience after death.",
   "keepinventory.config.keepScore.comment": "Keep player score after death.",
   "keepinventory.config.keepHunger.comment": "Keep player hunger after death.",
   "keepinventory.config.keepSaturation.comment": "Keep player saturation after death.",
   "keepinventory.config.keepPotionEffects.comment": "Keep player potion effects after death.",
+  "keepinventory.config.applyDurabilityPenalty.comment": "Damage player's items durability after death.",
   "keepinventory.config.keepedSlots.comment": "A comma-separated list of slot IDs to keep inventory, using strict format. Example: '0,1,2,36,37'",
   "keepinventory.config.keepedItems.comment": "A comma-separated list of item IDs to keep after death, using strict format. Example: 'minecraft:torch,minecraft:arrow'",
   "keepinventory.config.keepedExperienceModifier.comment": "Modifier that would be multiplied by your previous experience amount. Enabled keep experience required.",
   "keepinventory.config.keepedHungerModifier.comment": "Modifier that would be multiplied by your previous hunger amount. Enabled keep hunger required.",
   "keepinventory.config.keepedHungerMinLimit.comment": "Minimal value of hunger after your death, to prevent spawn with empty hunger bar.",
-  "keepinventory.config.keepedSaturationModifier.comment": "Modifier that would be multiplied by your previous saturation amount. Enabled keep saturation required."
+  "keepinventory.config.keepedSaturationModifier.comment": "Modifier that would be multiplied by your previous saturation amount. Enabled keep saturation required.",
+  "keepinventory.config.durabilityModifier.comment":"A modifier applied to an item's durability if the item is saved, when possible."
 }

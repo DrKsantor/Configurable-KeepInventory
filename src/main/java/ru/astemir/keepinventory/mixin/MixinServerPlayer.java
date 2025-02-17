@@ -18,6 +18,7 @@ import ru.astemir.keepinventory.KIConfig;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
@@ -82,6 +83,18 @@ public abstract class MixinServerPlayer extends Player {
                 for (int slotId : savedSlots) {
                     ItemStack itemStack = player.getInventory().getItem(slotId);
                     if (itemStack != null) {
+                        if (itemStack.isDamageableItem() && KIConfig.APPLY_DURABILITY_PENALTY.get()) {
+                            int maxDurability = itemStack.getMaxDamage();
+                            double randomFactor = ThreadLocalRandom.current().nextDouble(-0.05, 0.05);
+                            int randomVariation = (int) Math.round(maxDurability * randomFactor);
+
+                            int newRemainingDurability = (int) Math.round((maxDurability - itemStack.getDamageValue()) * KIConfig.DURABILITY_MODIFIER.get() + randomVariation);
+                            int newDamageValue = maxDurability - newRemainingDurability;
+                            newDamageValue = Math.max(0, Math.min(newDamageValue, maxDurability)); // check for limits
+                            LOGGER.info("[KeepInventory] Modifying item {} durability: max={}, oldDamage={}, modifier={}, randomVariation={}, newDamage={}",
+                                    itemStack.getDisplayName(), maxDurability, itemStack.getDamageValue(), KIConfig.DURABILITY_MODIFIER.get(), randomVariation, newDamageValue);
+                            itemStack.setDamageValue(newDamageValue);
+                        }
                         this.getInventory().setItem(slotId, itemStack);
                     }
                 }
@@ -106,7 +119,18 @@ public abstract class MixinServerPlayer extends Player {
                     if (itemStack.isEmpty()) {
                         continue;
                     }
-                    LOGGER.info("[MixinServerPlayer] Enabled all items restore: slotId:{}, itemstack:{}", i, itemStack);
+                    if (itemStack.isDamageableItem() && KIConfig.APPLY_DURABILITY_PENALTY.get()) {
+                        int maxDurability = itemStack.getMaxDamage();
+                        double randomFactor = ThreadLocalRandom.current().nextDouble(-0.05, 0.05);
+                        int randomVariation = (int) Math.round(maxDurability * randomFactor);
+
+                        int newRemainingDurability = (int) Math.round((maxDurability - itemStack.getDamageValue()) * KIConfig.DURABILITY_MODIFIER.get() + randomVariation);
+                        int newDamageValue = maxDurability - newRemainingDurability;
+                        newDamageValue = Math.max(0, Math.min(newDamageValue, maxDurability)); // check for limits
+                        LOGGER.info("[KeepInventory] Modifying durability: max={}, oldDamage={}, modifier={}, randomVariation={}, newDamage={}",
+                                maxDurability, itemStack.getDamageValue(), KIConfig.DURABILITY_MODIFIER.get(), randomVariation, newDamageValue);
+                        itemStack.setDamageValue(newDamageValue);
+                    }
                     this.getInventory().setItem(i, itemStack);
                 }
             }
